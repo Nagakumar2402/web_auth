@@ -30,6 +30,9 @@ const userSchema = new Schema(
     refreshToken: {
       type: String,
     },
+    passKey: {
+      type: Object,
+    },
   },
   {
     timestamps: true,
@@ -71,4 +74,20 @@ userSchema.methods.generateAccessToken = async function () {
   return accessToken;
 };
 
-export const User = mongoose.model("User", userSchema);
+const challengeSchema = new Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    challenge: { type: String, required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const User = mongoose.model("User", userSchema);
+const Challenge = mongoose.model("Challenge", challengeSchema);
+export { User, Challenge };

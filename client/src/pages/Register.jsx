@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
 import { LuEye } from "react-icons/lu";
 import { MdOutlineAlternateEmail } from "react-icons/md";
@@ -7,24 +7,27 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { validationSchemaRegister } from "../utils/validationSchema";
 import axios from "axios";
+import Popup from "../components/Popup";
 const Register = () => {
+  const [popup, setPopup] = React.useState(false);
+  const [id, setId] = React.useState(0);
   const initialValues = {
     username: "",
     email: "",
     fullName: "",
     password: "",
   };
-  const navigate = useNavigate();
+
   const onSubmit = async (values, action) => {
     const url = "http://localhost:9032/api/v1/users";
     try {
       const response = await axios.post(`${url}/register`, values);
+
       if (response.status === 201) {
         alert(response.data.message);
-        setTimeout(() => {
-          navigate("/login");
-          action.resetForm();
-        }, 2000);
+        setPopup(true);
+        setId(response.data.data._id);
+        action.resetForm();
       } else {
         alert(response.data.message || "An error occurred.");
       }
@@ -43,9 +46,9 @@ const Register = () => {
       action.setSubmitting(false);
     }
   };
-
   return (
     <>
+      {popup && <Popup setPopup={setPopup} id={id} />}
       <div className="max-w-screen-xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
         <div className="max-w-lg mx-auto">
           <h1 className="text-2xl font-bold text-center text-indigo-600 sm:text-3xl">
