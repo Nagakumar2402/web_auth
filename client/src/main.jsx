@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import { SignIn, Register } from "./pages";
 import Root from "./Root.jsx";
+import Login from "./components/Login.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,7 +23,8 @@ const router = createBrowserRouter(
         }
       />
       <Route path="register" element={<Register />} />
-      <Route path="login" element={<SignIn />} />
+      {/* <Route path="login" element={<SignIn />} /> */}
+      <Route path="login" element={<Login />} />
     </Route>
   )
 );

@@ -14,12 +14,11 @@ const Popup = ({ setPopup, id }) => {
       });
       const { options } = response.data;
       const authenticationResult = await startRegistration({ ...options });
-      console.log(authenticationResult);
       const verificationResponse = await axios.post(`${url}/register-verify`, {
         userId: id,
         credential: authenticationResult,
       });
-      if (verificationResponse.data.verified) {
+      if (verificationResponse.data.data.verified) {
         alert("Registration successful");
         setPopup(false); // Close popup on successful registration
         navigate("/login"); // Redirect to login
@@ -28,7 +27,7 @@ const Popup = ({ setPopup, id }) => {
       }
     } catch (error) {
       console.error("Error during registration:", error);
-      alert("An error occurred during registration.");
+      alert("An error occurred during registration");
     }
   };
   const closePopup = () => {
